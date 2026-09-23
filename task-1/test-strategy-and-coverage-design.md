@@ -146,7 +146,7 @@ This must be clarified because **"transfer failed" cannot safely mean "perform a
 * **SMS Notifications:** Ensuring core transaction flow continues safely even during notification drops.
 
 
-## Task 1.3 — Test Cases
+## 🧪 3. Task 1.3 — Test Cases
 
 Given the 12-case cap, I would optimize for risk coverage rather than one test per acceptance criterion. The suite deliberately prioritizes financial integrity, authentication, limits, idempotency, failure recovery, and critical integrations.
 
@@ -196,7 +196,7 @@ Security & Access Control ★★★★★  TC-05/11
 
 The deliberate trade-off is not spending separate cases on low-risk UI permutations. The 12 cases concentrate on scenarios where a defect could cause financial loss, unauthorized transfer, incorrect customer balance, regulatory exposure, or unrecoverable transaction state.
 
-### 1.4 — Coverage Decisions
+## 📐 4. Task 1.4 — Coverage Decisions
 
 **What did you deliberately choose not to cover, and why?**
 
