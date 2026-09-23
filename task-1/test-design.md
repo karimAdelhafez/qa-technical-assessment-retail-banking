@@ -19,8 +19,11 @@
 | **Q15** | Is SMS notification failure allowed to make the financial transaction fail?                                                     | Notification failure should not normally create a second financial transaction.  | SMS is non-blocking; a successful transfer remains successful if notification delivery fails.                                    |
 | **Q16** | What exact data must appear on the confirmation screen and SMS?                                                                 | Defines functional validation, data integrity, and sensitive-data masking.       | Both contain approved transfer details and transaction reference; sensitive account data is masked.                              |
 | **Q17** | Does the optional purpose note have maximum length, character restrictions, or mandatory rules?                                 | Required for input validation, data integrity, and security testing.             | Optional field with a defined maximum length and server-side validation.                                                         |
-| **Q18** | Are there **cutoff times, weekends, holidays, or clearing windows** affecting processing?                                       | Important for transfers processed through batch/clearing rails.                  | Processing follows the configured bank/payment-scheme calendar and cutoff rules.                                                 |
+| **Q18** | Are there **cutoff times, weekends, holidays, or clearing windows** affecting processing?                                       | Important for transfers processed through batch/clearing rails.                  | Processing follows the configured bank/payment-scheme calendar and cutoff rules.    
+                                             |
+# Task 1 — Test Design & Risk Coverage
 
+## 📋 1. Project Prioritization Strategy
 
 ### Priority if time is limited
 
@@ -84,55 +87,60 @@ I would prioritize risks based on **financial impact, security exposure, custome
 | **P2**   | **Cutoff / Clearing Rules**          | Transfer is processed in the wrong clearing window                                              | Unexpected delay                                               | Operational and customer-service impact                                | Business-rule defect                                                    |
 | **P2**   | **Input Validation**                 | Invalid amount/purpose data is accepted or malformed data reaches downstream systems            | Failed or unexpected transfer behavior                         | Data-quality/security concerns                                         | Preventable validation defect                                           |
 
+# Task 1 — Test Design & Risk Coverage
+
+## 📊 1. System Vulnerability Mapping
+
 ### Risk concentration
 
-The feature's highest-risk boundary is **the point where customer money is affected**:
+The feature's highest-risk boundary is the point where customer money is affected:
 
-```text id=*7m4q2a*
-Validation
-    ↓
-Authentication
-    ↓
-**CBS** Debit  ← ★ Financial Risk Boundary
-    ↓
-### Payment Rail
-    ↓
-### Beneficiary Credit
+```text
+       [Validation Layer]
+               │
+               ▼
+     [Authentication Layer]
+               │
+               ▼
+  💰 **CBS Debit** <─────── [FINANCIAL RISK BOUNDARY]
+               │
+               ▼
+       [Payment Rail]
+               │
+               ▼
+      [Beneficiary Credit]
 ```
 
-Before debit, most failures are primarily **transaction rejection**.
+* **Before Debit:** Most failures are primarily simple **transaction rejections** (Low Operational Risk).
+* **After Debit:** Failures escalate into **financial-integrity problems** requiring complex backend mechanisms:
+  * *Idempotency ➡️ State Recovery ➡️ Reconciliation ➡️ Automated Reversal*
 
-After debit, failures become **financial-integrity problems** requiring:
+---
 
-```text id=*x8y1pf* Idempotency → State Recovery → Reconciliation → Reversal ```
+## 👑 2. My Lead-Level Risk Priorities
 
-### My Lead-level risk priorities
-
-```text id=*6y7wqk*
-P0 — Money & Security
-    Duplicate debit
-    Debit + unknown outcome
-    Concurrency / balance
-    Limits
-    **OTP**
-
-P1 — Correctness & Compliance
-    Fees
-    Beneficiary validation
-    **AML**/Fraud
-    State management
-    Reversal
-    Reconciliation
-
-P2 — Customer Experience
-    **SMS**
-    Cutoff / clearing
-    Input validation
-```
-
+### 🎯 Strategic Test Approach
 **Testing implication:** I would allocate the majority of the test effort to **P0/P1 financial-integrity and security paths**, rather than distributing coverage evenly across the acceptance criteria.
 
-Task 1.3 — Test Cases
+### 🟢 P0 — Money & Security (Critical Integrity Tiers)
+* **Duplicate Debit:** Prevention of multi-click transaction processing loops.
+* **Debit + Unknown Outcome:** Asynchronous timeouts after successful CBS posting.
+* **Concurrency / Balance:** Multi-device race conditions exhausting same available funds.
+* **Limits:** Strict enforcement of transaction boundaries and cumulative ceilings.
+* **Authentication Security:** OTP life-cycle binding and anti-replay defense frameworks.
+
+### 🔴 P1 — Correctness & Compliance (Regulatory Tiers)
+* **Fees Logic:** Accurate multi-segment fee calculations and failure state retention rules.
+* **Beneficiary Validation:** Real-time routing state checks (Active, Frozen, Inactive accounts).
+* **Compliance Filters:** Real-time AML, sanctions screening, and global watchlist intercepts.
+* **State Management:** Strict transactional state-machine consistency within the database ledger.
+* **Reversal & Reconciliation:** EOD reconciliation logs and automated rollback triggers.
+
+### 🟡 P2 — Customer Experience (UX Tiers)
+* **SMS Notifications:** Ensuring core transaction flow continues safely even during notification drops.
+
+
+## Task 1.3 — Test Cases
 
 Given the 12-case cap, I would optimize for risk coverage rather than one test per acceptance criterion. The suite deliberately prioritizes financial integrity, authentication, limits, idempotency, failure recovery, and critical integrations.
 
