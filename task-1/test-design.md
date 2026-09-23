@@ -1,4 +1,6 @@
-## Task 1.1 — Questions & Assumptions
+# Task 1 — Test Design & Risk Coverage
+
+## 📋 1. Task 1.1 — Questions & Assumptions Matrix
 
 | #       | Question to BA / PO / Business                                                                                                  | Why it matters                                                                   | Assumption if unanswered                                                                                                         |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
@@ -19,11 +21,9 @@
 | **Q15** | Is SMS notification failure allowed to make the financial transaction fail?                                                     | Notification failure should not normally create a second financial transaction.  | SMS is non-blocking; a successful transfer remains successful if notification delivery fails.                                    |
 | **Q16** | What exact data must appear on the confirmation screen and SMS?                                                                 | Defines functional validation, data integrity, and sensitive-data masking.       | Both contain approved transfer details and transaction reference; sensitive account data is masked.                              |
 | **Q17** | Does the optional purpose note have maximum length, character restrictions, or mandatory rules?                                 | Required for input validation, data integrity, and security testing.             | Optional field with a defined maximum length and server-side validation.                                                         |
-| **Q18** | Are there **cutoff times, weekends, holidays, or clearing windows** affecting processing?                                       | Important for transfers processed through batch/clearing rails.                  | Processing follows the configured bank/payment-scheme calendar and cutoff rules.    
-                                             |
-## 1. Project Prioritization Strategy
+| **Q18** | Are there **cutoff times, weekends, holidays, or clearing windows** affecting processing?                                       | Important for transfers processed through batch/clearing rails.                  | Processing follows the configured bank/payment-scheme calendar and cutoff rules.    |
 
-### Priority if Time Is Limited
+### 👑 Project Prioritization Strategy (Priority if Time is Limited)
 
 #### 🟢 P0 — Financial Integrity
 
@@ -48,7 +48,7 @@
 
 ---
 
-## 2. Critical Requirement Gap
+### 🚨 Critical Requirement Loophole Gap (AC6 — Failure Loop)
 
 The highest-risk ambiguity in the supplied requirement is explicitly inside **AC6 — Failure**.
 
@@ -68,7 +68,7 @@ The highest-risk ambiguity in the supplied requirement is explicitly inside **AC
 This must be clarified because **"transfer failed" cannot safely mean "perform another transfer."** The system requires an explicit rule to transition **Pending / Unknown ➡️ Settled or Reversed** via an automated, idempotent recovery process.
 
 
-## Task 1.2 — Risk Assessment
+## 📊 2. Task 1.2 — Risk Assessment & Impact Strategy
 
     I would prioritize risks based on **financial impact, security exposure, customer impact, regulatory/reputational impact, and likelihood of failure**.
 
@@ -91,9 +91,8 @@ This must be clarified because **"transfer failed" cannot safely mean "perform a
 
     
 
-## 📊 1. System Vulnerability Mapping
+### 🎨 System Vulnerability Mapping (Risk Concentration)
 
-### Risk concentration
 
     The feature's highest-risk boundary is the point where customer money is affected:
 
@@ -119,7 +118,7 @@ This must be clarified because **"transfer failed" cannot safely mean "perform a
 
     ---
 
-## 👑 2. My Lead-Level Risk Priorities
+## 👑 My Lead-Level Risk Priorities
 
 ### 🎯 Strategic Test Approach
     **Testing implication:** I would allocate the majority of the test effort to **P0/P1 financial-integrity and security paths**, rather than distributing coverage evenly across the acceptance criteria.
