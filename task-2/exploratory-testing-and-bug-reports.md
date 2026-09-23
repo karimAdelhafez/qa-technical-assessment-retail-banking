@@ -61,18 +61,6 @@
 
 ---
 
----
-
-## 🧭 2.2 Exploratory Testing Approach & Roadmap
-
-### 🕵️‍♂️ Initial Exploration Strategy: Why & Where?
-My exploratory methodology followed a strict **Risk-Based and Transactional Lifecycle Tour**, targeting high-vulnerability financial operations first. Instead of executing random UI clicking, I prioritized testing the application’s **Core Financial Validation Boundaries** and backend integration points—specifically focusing on the **Transfer Funds**, **Request Loan**, and **Bill Pay** modules. 
-
-I chose Bill Pay and Fund Transfers as my primary high-risk areas because these components handle multi-parameter user inputs that directly alter active customer account balances, process external beneficiary validations, and touch the Core Banking System (CBS) ledger. Any validation omission or unhandled payload failure at these boundary endpoints represents the highest systemic threat vector for financial leakage, database truncation errors, or service downtime in a retail banking environment.
-
----
----
-
 ## 🧭 2.2 Exploratory Testing Approach & Roadmap
 
 ### 🕵️‍♂️ Initial Exploration Strategy: Why & Where?
