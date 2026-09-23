@@ -1,8 +1,12 @@
- # AI Usage Documentation — Task 1
+ # AI Usage Documentation
+
+This document logs the collaborative technical sparring workflow between myself (QA Lead) and the AI tool acting as a Systems Architecture Co-Pilot, organized clearly by task.
+
+---
 
 ## 🧠 Human-AI Collaborative Workflow (Strategic Technical Sparring)
 
-* The test design was developed through an iterative, bi-directional technical dialogue between the **QA Lead (Domain Expert)** and the **AI (Systems Architecture Co-Pilot)**. The process was not limited to generating documentation; both sides were used to challenge, refine, and stress-test the proposed coverage.
+* The test design was developed through an iterative, bi-directional technical dialogue between the **QA Lead (Domain Expert)** and the **AI (Quality Engineering & System Resiliency Co-Pilot)**. The process was not limited to generating documentation; both sides were used to challenge, refine, and stress-test the proposed coverage.
 
 * I established the core **Retail Banking baseline**, including:
   * Core Banking System (CBS) ledger and debit rules.
@@ -52,6 +56,7 @@ To maximize execution speed without sacrificing domain ownership, the collaborat
 ```
 
 ---
+## 📊 Task 1 — Test Strategy & Coverage Design
 
 ## 🎛️ 1. Prompts Used
 The workflow was driven by executing technically precise, highly scoped domain prompts to prevent generic AI drift and enforce architectural constraints from the start:
@@ -93,3 +98,32 @@ Because the initial prompting sequence established highly restrictive technical 
 * **Decisions Made:** I chose to treat the AI as a technical compilation engine rather than blindly accepting its structure. Driving the tool with deep backend parameters from the first sentence prevented it from drifting into presentation-layer scripts, while my structural adjustments ensured the matrix is fully maintainable and automation-ready.
 * **Alternatives Considered:** Allowing the AI to freely generate a standard generic test plan first, then filtering it. I rejected this because it wastes context tokens and degrades the engineering precision required for a Lead-level submission.
 
+---
+
+## 🐛 Task 2 — Exploratory Testing & Bug Reporting
+
+### 🎛️ 1. Prompt Used
+```text
+Act as an elite Principal QA Architect and Banking Domain System Reviewer. I am a QA Lead executing a time-boxed "Task 2 — Exploratory Testing & Bug Reporting" assignment. I have already performed the session and captured concrete functional defects. 
+
+You must act as my technical sparring partner to brainstorm, polish, and structure these findings into world-class, high-density engineering bug reports with zero boilerplate filler.
+
+[STRICT PROTOCOL FOR TOKEN CONSERVATION & QUALITY]:
+1. **Interactive Review:** Do NOT generate any test plans or empty tables yet. Review the raw bugs I am about to paste one by one.
+2. **Lead-Level Enhancement:** For each defect I share, you must immediately analyze it and provide:
+   * A concise, high-context title (Action + Component + Root Cause).
+   * The underlying technical/architectural root cause (e.g., State Machine imbalance, DB lock failure, improper validation layer).
+   * The downstream systemic impact across three boundaries: Customer, Bank Ledger, and Compliance/Audit.
+3. **Format:** Use short, punchy single-sentence fragments and compact layouts. No greetings or pleasantries.
+```
+
+### ✅ 2. What I Kept & Rationale
+* **API Error Classifications:** I kept the deep-dive architectural isolation of the `404 Not Found` routing breakdown and the `500 Internal Server Error` code definitions.
+  * *Why:* It cleanly demonstrates to the reviewer how unhandled backend exceptions threaten database connection pools, thread safety, and core ledger integrity under edge inputs.
+* **Risk-Based Exploration Tour:** I kept the strategic framing of the execution approach around a "Transactional Lifecycle Tour" targeting balance-altering endpoints.
+  * *Why:* It proves that the testing effort was structured around architectural risk management rather than random UI clicking.
+
+### ❌ 3. What I Rejected & Refined (My Corrections)
+* **Caught Mismatched Environment Parameters:** The AI accidentally injected a generic corporate homepage link (`parasoft.com`) inside the environment parameters block of both bugs. I caught this error during my active review and manually overrode the text to map the exact, live staging application paths (`://parasoft.com...`) to prevent environment invalidation.
+* **Overrode Generic Technical Explanations:** The tool initially generated text-heavy descriptions regarding general standard HTTP validations. I stepped in and merged my explicit reasoning—identifying the root issue as a failure to handle input validations on both the frontend and backend layer—to ensure the reports read in a genuine, human engineering voice.
+* **Separated Business Justifications:** The AI initially combined the priority and severity risk analysis into single paragraphs. I rejected that format and forced them into explicit, distinct single-line text statements to achieve 100% compliance with the assessment grading checklist.
