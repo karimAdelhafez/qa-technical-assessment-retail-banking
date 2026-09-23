@@ -89,5 +89,4 @@ If granted an additional 2 hours of exploration, I would systematically deploy m
 
 4. **Data Management, Search & Compliance (Find Transactions & Update Contact Info):**
    * Run heavy search parameter strings (by exact ID, specific amount range, or historical date boundaries) within the transaction ledger.
-   * Inject structured malicious payload strings (SQL injection or XSS parameters) into search bars and contact configuration fields to verify server-side input sanitization.
    * Validate that updating contact profiles (address, phone numbers) instantly synchronizes across downstream accounting engines and does not lock user session accounts during active fund transfers.
