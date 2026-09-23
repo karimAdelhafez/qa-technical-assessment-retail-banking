@@ -21,29 +21,47 @@
 | **Q17** | Does the optional purpose note have maximum length, character restrictions, or mandatory rules?                                 | Required for input validation, data integrity, and security testing.             | Optional field with a defined maximum length and server-side validation.                                                         |
 | **Q18** | Are there **cutoff times, weekends, holidays, or clearing windows** affecting processing?                                       | Important for transfers processed through batch/clearing rails.                  | Processing follows the configured bank/payment-scheme calendar and cutoff rules.                                                 |
 
+
 ### Priority if time is limited
 
-```text P0 — Financial Integrity ## Limits: daily vs transaction semantics ## Fees: calculation, timing, failure behavior ## Duplicate submission / idempotency ## Debit-success + timeout / unknown outcome ## Transaction states + reversal
+#### 🟢 P0 — Financial Integrity
+* **Limits:** Validating exact daily versus per-transaction boundary semantics.
+* **Fees:** Checking runtime calculation models, transaction timing, and fee recovery/failure behavior.
+* **Duplicate Submissions:** Enforcing API Gateway idempotency rules to block rapid duplicate requests.
+* **Resiliency Breaks:** Managing a successful debit paired with an immediate downstream timeout or unknown outcome.
+* **Ledger Synchronization:** Tracking atomic banking transaction states and automated reversal routines.
 
-P1 — Security & Compliance ## OTP lifecycle ## Beneficiary eligibility ## AML / sanctions / fraud behavior
+#### 🔴 P1 — Security & Compliance
+* **OTP Lifecycle:** Validating session tokens, transaction binding, retry lockouts, and anti-replay parameters.
+* **Beneficiary Eligibility:** Reviewing active, suspended, and closed destination accounts before interaction.
+* **AML / Sanctions / Fraud Behavior:** Verifying real-time monitoring and transaction blacklist checks.
 
-P2 — Operational / UX ## SMS failure behavior ## Confirmation data ## Purpose-note validation ## Cutoff / holiday behavior ```
+#### 🟡 P2 — Operational / UX
+* **SMS Failure Behavior:** Ensuring carrier delivery notification drops do not alter successful financial posting.
+* **Confirmation Data Mapping:** Verifying unique reference keys perfectly match frontend receipt views.
+* **Purpose-Note Validation:** Sanitizing note input boxes against malicious cross-site scripting (XSS) injection.
+* **Cutoff / Holiday Behavior:** Mapping state machine transitions across multi-day financial clearing windows.
 
-### Critical requirement gap
+---
 
-The highest-risk ambiguity in the supplied requirement is ****AC6** — Failure**.
+## 🚨 2. Critical Requirement Loophole Gap
 
+The highest-risk ambiguity in the supplied requirement is explicitly inside **AC6 — Failure**.
+
+### Asynchronous Error Flow:
 ```text
-### Transfer Request
-      ↓
-**CBS** Debit = **SUCCESS**
-      ↓
-Payment Processing = **TIMEOUT** / **UNKNOWN**
-      ↓
-What happens to the customer's money?
+      [Transfer Request]
+              ↓
+     [CBS Debit = SUCCESS]
+              ↓
+ [Payment Processing = TIMEOUT / UNKNOWN]
+              ↓
+   🔍 CRITICAL REQUIREMENT GAP:
+   What happens to the customer's money?
 ```
 
-This must be clarified because **“transfer failed” cannot safely mean “perform another transfer.”** The system needs an explicit rule for **Pending / Unknown → Settled or Reversed**, with idempotent recovery.
+This must be clarified because **"transfer failed" cannot safely mean "perform another transfer."** The system requires an explicit rule to transition **Pending / Unknown ➡️ Settled or Reversed** via an automated, idempotent recovery process.
+
 
 ## Task 1.2 — Risk Assessment
 
