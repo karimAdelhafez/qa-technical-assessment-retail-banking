@@ -1,6 +1,9 @@
-# QA Technical Assessment
+# QA Technical Assessment — Retail Banking App
+
+Enterprise-grade Quality Engineering validation portfolio for a Retail Banking Mobile Application, focusing on system resiliency, data integrity, and backend architectural test coverage for the Local Fund Transfer feature.
 
 ## 📁 Repository Structure
+
 
 ```text
 .
