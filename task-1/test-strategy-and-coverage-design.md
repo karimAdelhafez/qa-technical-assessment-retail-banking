@@ -72,22 +72,23 @@ This must be clarified because **"transfer failed" cannot safely mean "perform a
 
     I would prioritize risks based on **financial impact, security exposure, customer impact, regulatory/reputational impact, and likelihood of failure**.
 
-    | Priority | Risk Area                            | What Could Go Wrong                                                                             | Customer Impact                                                | Bank Impact                                                            | Delivery Partner Impact                                                 |
-    | -------- | ------------------------------------ | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-    | **P0**   | **Duplicate Transfer / Idempotency** | Same request is processed twice due to double-click, retry, or network timeout                  | Customer loses money twice                                     | Financial loss, complaints, reconciliation issues, regulatory exposure | Critical production defect; loss of trust in our engineering quality    |
-    | **P0**   | **Debit vs Transfer Outcome**        | Account is debited but downstream transfer fails or outcome becomes unknown                     | Money temporarily or permanently unavailable                   | Financial exposure, manual investigation, compensation/reversal costs  | Severe defect demonstrating inadequate distributed-transaction handling |
-    | **P0**   | **Incorrect Balance / Concurrency**  | Concurrent transfers bypass available-balance checks                                            | Overdraft or unexpected balance reduction                      | Financial loss and ledger inconsistency                                | High-severity data-integrity defect                                     |
-    | **P0**   | **Limits Enforcement**               | Daily or per-transaction limits are calculated incorrectly or can be bypassed                   | Customer may transfer more than intended/allowed               | Policy/control violation and potential financial exposure              | Defect in core business-control implementation                          |
-    | **P0**   | **OTP / Authentication**             | OTP can be reused, bypassed, guessed, or applied to another transaction                         | Unauthorized transfer / account compromise                     | Direct financial loss, fraud, security and regulatory consequences     | Major security defect and potential contractual escalation              |
-    | **P1**   | **Fee Calculation**                  | Wrong fee, incorrect boundary, or fee charged after a failed transfer                           | Customer is overcharged                                        | Revenue leakage or customer compensation/reconciliation issues         | Financial-calculation defect                                            |
-    | **P1**   | **Beneficiary Validation**           | Disabled/invalid beneficiary can receive funds, or beneficiary details are incorrect            | Funds sent to unintended/invalid destination                   | Return/recovery costs and customer disputes                            | Integration/business-rule defect                                        |
-    | **P1**   | **AML / Sanctions / Fraud Controls** | Required screening is skipped, incorrectly approved, or incorrectly blocks legitimate transfers | Funds may be blocked or financial-crime exposure may occur     | Regulatory, financial, and reputational consequences                   | Critical compliance/integration defect                                  |
-    | **P1**   | **Transaction State Management**     | UI/API reports Success while backend is Pending/Failed/Reversed                                 | Customer believes money was transferred when it was not        | Complaints, reconciliation issues, operational cost                    | Loss of confidence in system correctness                                |
-    | **P1**   | **Reversal / Recovery**              | Failed transfer is not reversed after successful debit, or reversal happens twice               | Money remains unavailable or is duplicated                     | Ledger imbalance / financial loss                                      | Severe resilience and integration defect                                |
-    | **P1**   | **Reconciliation**                   | CBS, switch, rail, and beneficiary records disagree and mismatch is not detected                | Delayed or incorrect resolution of customer issue              | Unresolved financial discrepancies                                     | Indicates inadequate operational controls                               |
-    | **P2**   | **Notification**                     | SMS is missing, duplicated, delayed, or contains incorrect transaction details                  | Customer lacks confirmation or receives misleading information | Support volume and communication issues                                | Functional/integration defect                                           |
-    | **P2**   | **Cutoff / Clearing Rules**          | Transfer is processed in the wrong clearing window                                              | Unexpected delay                                               | Operational and customer-service impact                                | Business-rule defect                                                    |
-    | **P2**   | **Input Validation**                 | Invalid amount/purpose data is accepted or malformed data reaches downstream systems            | Failed or unexpected transfer behavior                         | Data-quality/security concerns                                         | Preventable validation defect                                           |
+| Priority | Risk Area | What Could Go Wrong | Customer Impact | Bank Impact | Delivery Partner Impact |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **P0** | **Duplicate Transfer / Idempotency** | Same request is processed twice due to double-click, retry, or network timeout | Customer loses money twice | Financial loss, complaints, reconciliation issues, regulatory exposure | Critical production defect; loss of trust in our engineering quality |
+| **P0** | **Debit vs Transfer Outcome** | Account is debited but downstream transfer fails or outcome becomes unknown | Money temporarily or permanently unavailable | Financial exposure, manual investigation, compensation/reversal costs | Severe defect demonstrating inadequate distributed-transaction handling |
+| **P0** | **Incorrect Balance / Concurrency** | Concurrent transfers bypass available-balance checks | Overdraft or unexpected balance reduction | Financial loss and ledger inconsistency | High-severity data-integrity defect |
+| **P0** | **Limits Enforcement** | Daily or per-transaction limits are calculated incorrectly or can be bypassed | Customer may transfer more than intended/allowed | Policy/control violation and potential financial exposure | Defect in core business-control implementation |
+| **P0** | **OTP / Authentication** | OTP can be reused, bypassed, guessed, or applied to another transaction | Unauthorized transfer / account compromise | Direct financial loss, fraud, security and regulatory consequences | Major security defect and potential contractual escalation |
+| **P1** | **Fee Calculation** | Wrong fee, incorrect boundary, or fee charged after a failed transfer | Customer is overcharged | Revenue leakage or customer compensation/reconciliation issues | Financial-calculation defect |
+| **P1** | **Beneficiary Validation** | Disabled/invalid beneficiary can receive funds, or beneficiary details are incorrect | Funds sent to unintended/invalid destination | Return/recovery costs and customer disputes | Integration/business-rule defect |
+| **P1** | **AML / Sanctions / Fraud Controls** | Required screening is skipped, incorrectly approved, or incorrectly blocks legitimate transfers | Funds may be blocked or financial-crime exposure may occur | Regulatory, financial, and reputational consequences | Critical compliance/integration defect |
+| **P1** | **Transaction State Management** | UI/API reports Success while backend is Pending/Failed/Reversed | Customer believes money was transferred when it was not | Complaints, reconciliation issues, operational cost | Loss of confidence in system correctness |
+| **P1** | **Reversal / Recovery** | Failed transfer is not reversed after successful debit, or reversal happens twice | Money remains unavailable or is duplicated | Ledger imbalance / financial loss | Severe resilience and integration defect |
+| **P1** | **Reconciliation** | CBS, switch, rail, and beneficiary records disagree and mismatch is not detected | Delayed or incorrect resolution of customer issue | Unresolved financial discrepancies | Indicates inadequate operational controls |
+| **P2** | **Notification** | SMS is missing, duplicated, delayed, or contains incorrect transaction details | Customer lacks confirmation or receives misleading information | Support volume and communication issues | Functional/integration defect |
+| **P2** | **Cutoff / Clearing Rules** | Transfer is processed in the wrong clearing window | Unexpected delay | Operational and customer-service impact | Business-rule defect |
+| **P2** | **Input Validation** | Invalid amount/purpose data is accepted or malformed data reaches downstream systems | Failed or unexpected transfer behavior | Data-quality/security concerns | Preventable validation defect |
+
 
     
 
@@ -96,49 +97,50 @@ This must be clarified because **"transfer failed" cannot safely mean "perform a
 
     The feature's highest-risk boundary is the point where customer money is affected:
 
-    ```text
-        [Validation Layer]
-                │
-                ▼
-        [Authentication Layer]
-                │
-                ▼
-    💰 **CBS Debit** <─────── [FINANCIAL RISK BOUNDARY]
-                │
-                ▼
-        [Payment Rail]
-                │
-                ▼
-        [Beneficiary Credit]
-    ```
+```text
+    [Validation Layer]
+    │
+    ▼
+    [Authentication Layer]
+    │
+    ▼
+💰 ****CBS** Debit** <─────── [**FINANCIAL** **RISK** **BOUNDARY**]
+    │
+    ▼
+    [Payment Rail]
+    │
+    ▼
+    [Beneficiary Credit]
+```
 
-    * **Before Debit:** Most failures are primarily simple **transaction rejections** (Low Operational Risk).
-    * **After Debit:** Failures escalate into **financial-integrity problems** requiring complex backend mechanisms:
-    * *Idempotency ➡️ State Recovery ➡️ Reconciliation ➡️ Automated Reversal*
+- **Before Debit:** Most failures are primarily simple **transaction rejections** (Low Operational Risk).
+- **After Debit:** Failures escalate into **financial-integrity problems** requiring complex backend mechanisms:
+- *Idempotency ➡️ State Recovery ➡️ Reconciliation ➡️ Automated Reversal*
 
-    ---
+---
+
 
 ## 👑 My Lead-Level Risk Priorities
 
 ### 🎯 Strategic Test Approach
-    **Testing implication:** I would allocate the majority of the test effort to **P0/P1 financial-integrity and security paths**, rather than distributing coverage evenly across the acceptance criteria.
+**Testing implication:** I would allocate the majority of the test effort to **P0/P1 financial-integrity and security paths**, rather than distributing coverage evenly across the acceptance criteria.
 
 ### 🟢 P0 — Money & Security (Critical Integrity Tiers)
-    * **Duplicate Debit:** Prevention of multi-click transaction processing loops.
-    * **Debit + Unknown Outcome:** Asynchronous timeouts after successful CBS posting.
-    * **Concurrency / Balance:** Multi-device race conditions exhausting same available funds.
-    * **Limits:** Strict enforcement of transaction boundaries and cumulative ceilings.
-    * **Authentication Security:** OTP life-cycle binding and anti-replay defense frameworks.
+* **Duplicate Debit:** Prevention of multi-click transaction processing loops.
+* **Debit + Unknown Outcome:** Asynchronous timeouts after successful CBS posting.
+* **Concurrency / Balance:** Multi-device race conditions exhausting same available funds.
+* **Limits:** Strict enforcement of transaction boundaries and cumulative ceilings.
+* **Authentication Security:** OTP life-cycle binding and anti-replay defense frameworks.
 
 ### 🔴 P1 — Correctness & Compliance (Regulatory Tiers)
-    * **Fees Logic:** Accurate multi-segment fee calculations and failure state retention rules.
-    * **Beneficiary Validation:** Real-time routing state checks (Active, Frozen, Inactive accounts).
-    * **Compliance Filters:** Real-time AML, sanctions screening, and global watchlist intercepts.
-    * **State Management:** Strict transactional state-machine consistency within the database ledger.
-    * **Reversal & Reconciliation:** EOD reconciliation logs and automated rollback triggers.
+* **Fees Logic:** Accurate multi-segment fee calculations and failure state retention rules.
+* **Beneficiary Validation:** Real-time routing state checks (Active, Frozen, Inactive accounts).
+* **Compliance Filters:** Real-time AML, sanctions screening, and global watchlist intercepts.
+* **State Management:** Strict transactional state-machine consistency within the database ledger.
+* **Reversal & Reconciliation:** EOD reconciliation logs and automated rollback triggers.
 
 ### 🟡 P2 — Customer Experience (UX Tiers)
-    * **SMS Notifications:** Ensuring core transaction flow continues safely even during notification drops.
+* **SMS Notifications:** Ensuring core transaction flow continues safely even during notification drops.
 
 
 ## Task 1.3 — Test Cases
