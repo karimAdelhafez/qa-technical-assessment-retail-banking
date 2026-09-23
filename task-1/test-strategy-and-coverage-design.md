@@ -1,5 +1,8 @@
-# Task 1 — Test Design & Risk Coverage
+# Task 1 — Test Strategy and Coverage Design
 
+This document contains my complete test strategy, case design, and release governance for the new Local Fund Transfer feature, covering tasks 1.1 through 1.4. Before execution, I compiled a focused list of sharp business questions and assumptions to lock down requirement ambiguities (1.1). I then conducted a comprehensive risk assessment mapping system failure impacts across customers, the bank ledger, and our team (1.2). Given the strict evaluation budget, I designed a high-density suite of exactly 12 core functional test cases targeting critical backend financial integrity and security boundaries (1.3). Finally, this file details my deliberate coverage omissions, regression automation boundaries, and structural quality gates required to guarantee this feature is safe to release (1.4).
+
+---
 ## 📋 1. Task 1.1 — Questions & Assumptions Matrix
 
 | #       | Question to BA / PO / Business                                                                                                  | Why it matters                                                                   | Assumption if unanswered                                                                                                         |
