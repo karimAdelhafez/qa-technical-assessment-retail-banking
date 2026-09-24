@@ -90,7 +90,7 @@ The API portfolio delivers a fully parameterized, data-driven automation solutio
 ---
 ## 🧪 Automation Framework Design & Test Architecture
 
-### 🏛️ 4. Task 4
+### 4. Task 4 — Scalable Operations Component Framework
 
 The automation design portfolio delivers a decoupled, high-scale framework blueprint targeting the dynamic Bank Operations Console. It focuses on robust locator maintainability, zero static sleeps, and shared-environment data isolation:
 
