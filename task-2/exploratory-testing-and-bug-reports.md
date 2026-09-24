@@ -1,5 +1,8 @@
 # Task 2 — Exploratory Testing & Bug Reporting
 
+This document logs the outcomes of my time-boxed exploratory testing session conducted on the ParaBank core banking platform. Instead of execution-free or random UI clicking, I deployed a structured, risk-based exploratory strategy specifically targeting critical session boundaries and balance-altering transaction flows. Below are the precise functional defects discovered—complete with underlying architectural root causes, multi-layer business impact metrics, and reproducible execution steps—followed by a comprehensive roadmap outlining exactly how I would expand test coverage if granted additional engineering execution windows.
+
+---
 ## 🐛 2.1 Core Functional Defect Reports
 
 ### 🚨 [BUG-01]: App crashes with 404 error when submitting Transfer Funds with an empty amount field
@@ -90,3 +93,4 @@ If granted an additional 2 hours of exploration, I would systematically deploy m
 4. **Data Management, Search & Compliance (Find Transactions & Update Contact Info):**
    * Run heavy search parameter strings (by exact ID, specific amount range, or historical date boundaries) within the transaction ledger.
    * Validate that updating contact profiles (address, phone numbers) instantly synchronizes across downstream accounting engines and does not lock user session accounts during active fund transfers.
+لهف
