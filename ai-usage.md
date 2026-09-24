@@ -127,3 +127,29 @@ You must act as my technical sparring partner to brainstorm, polish, and structu
 * **Caught Mismatched Environment Parameters:** The AI accidentally injected a generic corporate homepage link (`parasoft.com`) inside the environment parameters block of both bugs. I caught this error during my active review and manually overrode the text to map the exact, live staging application paths (`://parasoft.com...`) to prevent environment invalidation.
 * **Overrode Generic Technical Explanations:** The tool initially generated text-heavy descriptions regarding general standard HTTP validations. I stepped in and merged my explicit reasoning—identifying the root issue as a failure to handle input validations on both the frontend and backend layer—to ensure the reports read in a genuine, human engineering voice.
 * **Separated Business Justifications:** The AI initially combined the priority and severity risk analysis into single paragraphs. I rejected that format and forced them into explicit, distinct single-line text statements to achieve 100% compliance with the assessment grading checklist.
+---
+
+## 💸 Task 3 — API Testing & Integration Governance
+
+### 🧠 Human Guidance & Testing Scope
+While executing this task, I explicitly directed the technical sparring sessions to ensure the automated suite and written analysis covered my core QA Lead criteria: **Happy Paths, Edge Cases, Critical Banking Scenarios, Input Validation Matrices (Data Types & Boundaries), Missing/Mandatory Parameters, and Authentication Layer Constraints**. This human-led scope forced the output to focus entirely on deep banking risks rather than generic CRUD API responses.
+
+### 🎛️ 1. Prompts Used
+* **The Master API Strategy & Collection Prompt:**
+  ```text
+  Act as a Principal QA Architect. Help me execute a time-boxed technical assessment for a Retail Banking App transfer feature. We are testing a stack that involves a CBS ledger, instant payment rails, and AML screening. Give me zero conversational filler. Output must be in dense markdown tables and short bullet points. Let's work step-by-step.
+  ```
+* **The Payment Endpoint Analysis Prompt:**
+  ```text
+  Act as a Senior Banking QA Reviewer. I am analyzing a balance-altering POST payments endpoint for out-of-bank transfers. Help me structure my risk strategy, idempotency-key handling logic, and end-to-end ledger verification mechanisms into high-density engineering responses. Focus on structural boundaries (floating-point precision, currency cross-contamination, pessimistic DB locking) and architectural constraints. Keep it punchy and concise.
+  ```
+
+### ✅ 2. What I Kept & Rationale
+* **JSON Schema Contract Assertions (Part A):** Retained the exact 12-check validation framework to verify structural data types, numeric floats, and parameter consistency inside Postman.
+  * *Why:* It cleanly demonstrates dynamic schema verification over simple status code validation.
+* **Idempotency and Resilience Logic (Part B):** Retained the technical decoupling of error states, differentiating retry behaviors for network timeouts versus unhandled `503 Service Unavailable` server responses.
+  * *Why:* It highlights specialized domain knowledge regarding API gateway caching layers and double-debit prevention in banking architectures.
+
+### ❌ 3. What I Rejected & Refined (My Corrections)
+* **Zero Technical Drift via Strict Initial Prompting:** Because my initial master prompts enforced aggressive, zero-filler engineering criteria from the absolute start, the AI co-pilot executed all transaction validation frameworks correctly on the first pass, leaving zero low-quality or out-of-scope text blocks to be rejected.
+* **Refined Dynamic Collection Execution:** The only adjustments made were during the sandbox runtime configuration, where I manually guided the script execution paths to implement explicit `postman.setNextRequest()` routing loops to ensure all sequential chaining layers ran flawlessly across all iterations, achieving a clean **48/48 automated test pass rate**.
