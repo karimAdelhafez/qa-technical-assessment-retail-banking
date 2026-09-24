@@ -13,17 +13,17 @@ Enterprise-grade Quality Engineering validation portfolio for a Retail Banking A
 ├── task-1/
 │   └── test-strategy-and-coverage-design.md
 ├── task-2/
-│   └── exploratory-testing-and-bug-reports.md
+│   ├── exploratory-testing-and-bug-reports.md
 │   └── evidence/
 │       ├── bug_01_transfer_404.png
 │       └── bug_02_loan_500.png
 ├── task-3/
+│   ├── api-analysis-and-governance.md
 │   ├── currency-data.json
 │   ├── parabank-fx-rates-suite.postman_collection.json
-│   ├── rates-environment.json
-│   └── api-analysis-and-governance.md
-├── task-4/
-└── task-5/ 
+│   └── rates-environment.json
+└── task-4/
+    └── framework-architecture-design.md
 ```
 
 ---
@@ -35,6 +35,9 @@ Enterprise-grade Quality Engineering validation portfolio for a Retail Banking A
   * *Scope:* Time-boxed session execution on live ParaBank instances, structural root-cause isolation, business impact telemetry log, and future roadmap scoping.
 * **Task 3 — API Testing & Integration Governance:** 70 minutes *(Note: Includes an extra 20 minutes of operational client profiling to map dataset query-runner behaviors across updated Postman interface layers).*
   * *Scope:* Data-Driven Postman collection engine construction, schema contract assertions, request chaining loops, and upstream dependency security analysis.
+* **Task 4 — Automation Design & Test Architecture:** 50 minutes *(Note: Includes an extra 15 minutes of collaborative architectural spikes to design the abstract Semantic Parent-to-Child Anchor strategy, sight unseen due to missing visuals).*
+  * *Scope:* Composite Page Component designs, Semantic Parent-to-Child Anchor strategies, dynamic DOM rehydration gatekeepers, self-healing data models, and tooling trade-off evaluation.
+
 
 
 ---
@@ -84,3 +87,14 @@ The API portfolio delivers a fully parameterized, data-driven automation solutio
 * **Dynamic Pipeline Chaining:** Automatically harvests volatile server metadata state elements (`time_next_update_unix`) from active payloads at runtime, caching parameters inside environment tables (`rates-environment.json`) to enforce cross-request session synchronization.
 * **REST Architecture Critique:** Documents a major validation critique of the gateway's error encapsulation methods—exposing the critical system risk of wrapping internal execution failures inside successful `200 OK` HTTP envelopes when parsing malformed query keys (`INVALID`).
 * **Production Defenses Scoping:** Details explicit architectural specifications for moving public integrations to production banking baselines, mandating client-side caching gates, IPsec VPN/mTLS tunnel paths, and automatic circuit-breaking routines mapped to active local cached backup exchange blocks.
+---
+
+## 🏛️ 4. Task 4 — Automation Framework Design & Test Architecture
+
+The automation design portfolio delivers a decoupled, high-scale framework blueprint targeting the dynamic Bank Operations Console. It focuses on robust locator maintainability, zero static sleeps, and shared-environment data isolation:
+
+* **Composite Page Component Architecture:** Completely decouples the console workspace into localized, isolated tab modules to enforce the Single Responsibility Principle, ensuring all classes remain strictly under 100 lines.
+* **Semantic Parent-to-Child Anchor Strategy:** Bypasses session-dynamic identifiers (`slot="field-145"`) by anchoring onto the unique outer wrapper via stable text labels, utilizing scoped ARIA roles locally to polymorphic textboxes, dropdowns, and checkboxes.
+* **Dynamic Web Assertions & Rehydration Gates:** Eliminates brittle static sleeps via auto-polling web-first assertions and implements custom tab synchronization gatekeepers to perfectly insulate execution threads against dynamic DOM rehydration and stale element nodes.
+* **Self-Healing State Isolation Strategy:** Mitigates data-overwrite risks in shared testing environments by utilizing an automated baseline-seeding API client mechanism that records existing records pre-execution and enforces a mandatory reversion cleanup block during teardown.
+* **Multi-Layered Execution Architecture:** Establishes completely independent structural directory layers, segregating code into standalone browser context auth configurations, pure UI functional specs, async API contract validation specs, and Webpack-bundled TypeScript performance load scripts.
