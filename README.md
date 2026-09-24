@@ -88,8 +88,9 @@ The API portfolio delivers a fully parameterized, data-driven automation solutio
 * **REST Architecture Critique:** Documents a major validation critique of the gateway's error encapsulation methods—exposing the critical system risk of wrapping internal execution failures inside successful `200 OK` HTTP envelopes when parsing malformed query keys (`INVALID`).
 * **Production Defenses Scoping:** Details explicit architectural specifications for moving public integrations to production banking baselines, mandating client-side caching gates, IPsec VPN/mTLS tunnel paths, and automatic circuit-breaking routines mapped to active local cached backup exchange blocks.
 ---
+## 🧪 Automation Framework Design & Test Architecture
 
-## 🏛️ 4. Task 4 — Automation Framework Design & Test Architecture
+### 🏛️ 4. Task 4
 
 The automation design portfolio delivers a decoupled, high-scale framework blueprint targeting the dynamic Bank Operations Console. It focuses on robust locator maintainability, zero static sleeps, and shared-environment data isolation:
 
