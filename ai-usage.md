@@ -153,3 +153,26 @@ While executing this task, I explicitly directed the technical sparring sessions
 ### ❌ 3. What I Rejected & Refined (My Corrections)
 * **Zero Technical Drift via Strict Initial Prompting:** Because my initial master prompts enforced aggressive, zero-filler engineering criteria from the absolute start, the AI co-pilot executed all transaction validation frameworks correctly on the first pass, leaving zero low-quality or out-of-scope text blocks to be rejected.
 * **Refined Dynamic Collection Execution:** The only adjustments made were during the sandbox runtime configuration, where I manually guided the script execution paths to implement explicit `postman.setNextRequest()` routing loops to ensure all sequential chaining layers ran flawlessly across all iterations, achieving a clean **48/48 automated test pass rate**.
+---
+
+## 📈 Task 4 — Automation Design & Framework Architecture
+
+### 🧠 Human Guidance & Collaborative Brainstorming
+* **The Dynamic Wrapper Obstacle:** When I first looked at the Bank Operations Console requirements, I noticed a huge technical blocker: all the input fields use random session IDs like `slot="field-145"`, and the form components are repeated across multiple tabs. Writing traditional locators here would make the tests fail constantly. To be completely honest, I wasn't sure how to cleanly bypass this dynamic wrapper issue at first.
+* **The Brainstorming Breakthrough:** I used the AI co-pilot to run a technical design spike and brainstorm options. Together, we came up with a **Semantic Parent-to-Child Anchor Strategy**. Instead of chasing the broken dynamic IDs, we anchor onto the stable text labels (like "Transfer Limits") to isolate that specific field container first. I then forced the logic to use scoped Playwright ARIA roles inside that bounded box to select textboxes, dropdowns, or checkboxes without any ambiguity.
+
+### 🎛️ 1. Prompts Used
+* **The Master Automation Design Prompt:**
+  ```text
+  Act as a Senior Automation Architect specializing in Playwright and modern QA frameworks. I need you to design a scalable automation solution for Task 4 — Automation Design. We are automating regression coverage for a Bank Operations Console with multiple tabs. Each tab contains text, checkbox, and dropdown fields inside stable parent wrappers with dynamic child identifiers. Do not use dynamic IDs. Detail the project structure, locator strategy, dynamic DOM handling, test data strategy, and tool stack trade-offs. Present as structured sections with short snippets.
+  ```
+
+### ✅ 2. What I Kept & Rationale
+* **Composite Page Component Pattern:** I kept the strategy of breaking down each tab into its own sub-component file inside the pages directory.
+  * *Why:* It stops the codebase from turning into a giant, unreadable 900-line class file and keeps files under 100 lines for easy maintenance.
+* **API Baseline Capture & Teardown Lifecycles:** I kept the dynamic environment data strategy where we query configurations via API first, modify via UI, and revert everything back to normal.
+  * *Why:* This is the only realistic way to run parallel tests on a shared test environment without messing up data for other teams.
+
+### ❌ 3. What I Rejected & Refined (My Corrections)
+* **Separated the Test Structure by Protocol Layers:** The co-pilot initially dumped all the tests into a single folder. I stepped in and organized the structure to cleanly separate tests into isolated directories: **Auth setups, UI tests, API contract specs, and k6 concurrency scripts**.
+* **Added Real-World Tooling Trade-offs:** The initial tool analysis was too generic. I refined the tooling stack matrix to focus strictly on **Playwright (TypeScript)** and added explicit, practical constraints detailing the **Webpack bundling steps** needed to make TypeScript run inside **k6's Go-based engine**.
