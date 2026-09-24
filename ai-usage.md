@@ -6,7 +6,7 @@ This document logs the collaborative technical sparring workflow between myself 
 
 ## 🧠 Human-AI Collaborative Workflow (Strategic Technical Sparring)
 
-* The test design was developed through an iterative, bi-directional technical dialogue between the **QA Lead (Domain Expert)** and the **AI (Quality Engineering & System Resiliency Co-Pilot)**. The process was not limited to generating documentation; both sides were used to challenge, refine, and stress-test the proposed coverage.
+* The test design was developed through an iterative, bi-directional technical dialogue between the **QA Lead** and the **AI (Quality Engineering & System Resiliency Co-Pilot)**. The process was not limited to generating documentation; both sides were used to challenge, refine, and stress-test the proposed coverage.
 
 * I established the core **Retail Banking baseline**, including:
   * Core Banking System (CBS) ledger and debit rules.
@@ -91,12 +91,6 @@ Because the initial prompting sequence established highly restrictive technical 
 * **Refined: Vague Test Case Titles & Unstructured Steps:** While the core technical logic was sound from the start, the AI's first formatting pass fell short of lead-level documentation standards:
   * *Vague Titles:* The AI initially spit out simple headers like `TC-02 — Limit Check`. I rejected these and ordered a rewrite to use **Comprehensive Titles** detailing the Action, Component Boundary, and Expected Operational Outcome.
   * *Sloppy Steps:* The tool initially combined front-end button triggers with database logs in a loose sequence. I stepped in to enforce **QA Engineering Best Practices**, forcing clean isolation of preconditions, distinct sequential action steps, and an explicit separation of **UI/Frontend vs. Backend/CBS Ledger** expected results.
-
----
-
-### 🔍 4. Technical Interview Walk-Through Notes
-* **Decisions Made:** I chose to treat the AI as a technical compilation engine rather than blindly accepting its structure. Driving the tool with deep backend parameters from the first sentence prevented it from drifting into presentation-layer scripts, while my structural adjustments ensured the matrix is fully maintainable and automation-ready.
-* **Alternatives Considered:** Allowing the AI to freely generate a standard generic test plan first, then filtering it. I rejected this because it wastes context tokens and degrades the engineering precision required for a Lead-level submission.
 
 ---
 
