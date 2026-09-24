@@ -1,6 +1,6 @@
  # AI Usage Documentation
 
-This document logs the collaborative technical sparring workflow between myself (QA Lead) and the AI tool acting as a Systems Architecture Co-Pilot, organized clearly by task.
+This document logs the collaborative technical sparring workflow between myself (QA Lead) and the AI tool acting as Quality Engineering & System Resiliency Co-Pilot, organized clearly by task.
 
 ---
 
