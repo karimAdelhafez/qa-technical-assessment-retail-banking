@@ -45,25 +45,25 @@ To safely deploy this unauthenticated public integration into our production ban
 
 ## 💸 Part B — Testing a Payments Endpoint
 
-### 3.1 Highest-Risk Functional & Transactional Money Scenarios
-Because this is a balance-altering money engine and not a basic CRUD database endpoint, my high-risk testing matrix focuses heavily on financial thresholds:
+### 3.1 Highest-Risk Scenarios
+Because this endpoint actually moves money rather than just updating database fields, my testing focuses entirely on protecting customer funds and ledger boundaries:
 
-* **Amount Precision:** I will pass extreme fractional values (like `1500.7582` and `0.000001`) to ensure the server rejects inputs that exceed the currency's decimal exponent without causing rounding leakage.
-* **Currency Contamination:** Test cases will pass mismatch payloads (e.g., source account in `EGP` but transaction amount in `SAR`). The system must require a valid `fxQuoteId` to allow cross-currency transfers, blocking unauthorized background conversions.
-* **Concurrency Race Conditions:** I will execute rapid, parallel duplicate requests on the same source account within the exact same millisecond window. This verifies that the backend implements **Pessimistic Database Record Locking**, safely returning a `402 Insufficient Funds` to the second request instead of allowing an accidental double withdrawal.
-* **Boundary Caps:** I will pass payloads exactly at and slightly above daily caps (e.g., trying to process a transfer at `20,000.01` or a single request at `10,000.01`). The backend must reliably catch these boundary lines and drop them with a deterministic `422 Limit Exceeded` response.
+* **Amount Precision:** I will pass extreme fractional values (like `1500.7582` or `0.000001`) to make sure the server rejects inputs that exceed standard currency decimal limits. This stops rounding issues that leak money.
+* **Currency Verification:** I will try sending mismatch payloads (like a source account in `EGP` but sending the transfer value in `SAR`). The system must require an explicit, matching `fxQuoteId` to allow this, otherwise it should block it immediately to prevent unauthorized background conversions.
+* **Concurrency and Race Conditions:** I will send duplicate requests at the exact same millisecond window. This checks if the backend uses proper **Pessimistic Database Record Locking**, safely returning a `402 Insufficient Funds` to the second request instead of letting an accidental double withdrawal slip through.
+* **Limit Boundaries:** I will pass values right on and just over daily caps (like a transfer at `20,000.01` or a single request at `10,000.01`). The backend has to catch these boundary units and drop the transaction with a clear `422 Limit Exceeded` code.
 
 ### 3.2 Idempotency-Key Mechanics, Verification & Fault Recovery
-* **Core Purpose:** The `Idempotency-Key` is a safeguard managed at the API Gateway level. It guarantees that if a mobile client triggers duplicate clicks or retries a request due to a network drop, the backend will only process the transfer **exactly once**, preventing double-debiting.
-* **Verification Approach:** I will send a valid payment request that returns a `201 Created`. I will immediately resend the identical request payload with the exact same `Idempotency-Key`. The server must bypass the ledger database completely and instantly return the cached receipt from the first transaction. Altering the payload while using the same key must return a `409 Conflict`.
-* **Timeout & 503 Retries:**
-  * **After a Network Timeout:** The transfer state is unknown. The client must safely retry using the **identical Idempotency-Key**. If the server already ran the transfer before the drop, it serves the cached receipt. If it never reached the server, it processes it safely as a fresh transaction.
-  * **After a 503 Response:** A `503` proves the request choked at the gateway level *before* touching the business ledger. Since the money was never touched, the mobile application must generate a **brand new Idempotency-Key** for its retry attempt to avoid cross-locking backend databases.
+* **Core Purpose:** The `Idempotency-Key` stops a customer from being charged twice. If a user double-clicks or retries a request because their mobile network drops, the API gateway ensures the backend executes the money transfer **exactly once**.
+* **Verification Approach:** I will send a valid payment request that succeeds with a `201 Created`. I will immediately resend the exact same payload with the identical `Idempotency-Key`. The system passes if it skips the core accounting code entirely and instantly serves the cached receipt from the first run. Changing the payload while keeping the same key must fail with a `409 Conflict`.
+* **Network Timeout & 503 Retries:**
+  * **After a Network Timeout:** The actual transaction state is unknown. The mobile client must retry using the **identical Idempotency-Key**. If the server already completed the transaction before the network dropped, it returns the cached receipt safely. If it never reached the server, it processes it as a normal first-time transfer.
+  * **After receiving a 503 Service Unavailable:** A `503` means the request failed at the gateway level *before* it ever reached the accounting core. Because the user's money was never touched, the mobile app should generate a **brand new Idempotency-Key** for its retry attempt to process the transfer normally.
 
 ### 3.3 End-to-End Money Movement Verification (Beyond HTTP 201)
-Relying entirely on a surface-level `201 Created` HTTP response wrapper is a dangerous QA anti-pattern. To guarantee that customer funds actually shifted securely, I would implement automated backend checks:
+Relying entirely on a surface-level `201 Created` or `201 Created` HTTP response code is a classic QA mistake. To guarantee the money actually moved securely, I would audit the backend infrastructure tracks:
 
-* **Database Table Verification:** Query the account ledger rows directly to verify that the source account's available and ledger balances have dropped by the precise transfer amount plus calculated fees, while the beneficiary's rows reflect the matching credit.
-* **Double-Entry Balance Audit:** Audit the central accounting core to ensure a balanced pair of debit and credit transaction lines were officially committed to the general journal.
-* **Message Broker Tracing:** Inspect the event streaming pipelines (like Apache Kafka or RabbitMQ) to verify that the payment service published properly formatted JSON events to downstream Fraud Monitoring, AML screening, and Notification microservices.
-* **Clearing House Reconciliation:** Verify the automated generation of daily clearing file outputs (like ISO 20022 message schemes or MT940 statement logs) to ensure that the out-of-bank transaction data matches the exact settlement details authorized by the initial API request.
+* **Direct Database Queries:** I will check the ledger tables directly to verify that the source account's available and ledger balances dropped by the exact transfer amount plus fees, and that the beneficiary's rows reflect the correct matching credit.
+* **Double-Entry Balance Checks:** I will check the central accounting core logs to verify that a balanced pair of debit and credit transaction lines were committed together to the general ledger.
+* **Message Broker Verification:** I will trace the asynchronous event pipelines (like Apache Kafka or RabbitMQ logs) to ensure the payment service successfully published the correct JSON events to downstream Fraud Monitoring, AML, and Notification microservices.
+* **End-of-Day Reconciliation:** I will match the final transaction parameters against the automated daily clearing file outputs (like ISO 20022 schemas or MT940 statements) to confirm the out-of-bank settlement data matches what the user initially authorized.
