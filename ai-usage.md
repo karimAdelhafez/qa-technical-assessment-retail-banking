@@ -58,7 +58,7 @@ To maximize execution speed without sacrificing domain ownership, the collaborat
 ---
 ## 📊 Task 1 — Test Strategy & Coverage Design
 
-## 🎛️ 1. Prompts Used
+### 🎛️ 1. Prompts Used
 The workflow was driven by executing technically precise, highly scoped domain prompts to prevent generic AI drift and enforce architectural constraints from the start:
 
 * **The Master Execution Prompt:**
@@ -73,7 +73,7 @@ The workflow was driven by executing technically precise, highly scoped domain p
 
 ---
 
-## ✅ 2. What I Kept & Rationale
+### ✅ 2. What I Kept & Rationale
 Because the initial prompting sequence established highly restrictive technical boundaries, the collaborative output achieved excellent engineering alignment on the core logic. I retained:
 
 * **Distributed Fault Resiliency Steps:** Retained the edge-case handling sequences validating how the system transitions when the network drops exactly between a successful CBS account debit and a clearing switch ACK.
@@ -84,7 +84,7 @@ Because the initial prompting sequence established highly restrictive technical 
 
 ---
 
-## ❌ 3. What I Rejected & Refined (Human-Led Quality Control)
+### ❌ 3. What I Rejected & Refined (Human-Led Quality Control)
 
 * **No Material Rejections:** Because my engineering prompts enforced strict constraints upfront (explicitly ordering the tool to bypass conversational boilerplate, eliminate standard front-end UI fluff like button colors, and stick purely to dense backend matrices), **there were no irrelevant or low-quality outputs generated to be rejected.**
 * **Structural Enforcement:** The only adjustments made during the workflow were structural filters—reminding the tool to keep its text tightly wrapped and formatted in clean Markdown to maximize scannability for secondary automation engineers.
@@ -94,7 +94,7 @@ Because the initial prompting sequence established highly restrictive technical 
 
 ---
 
-## 🔍 4. Technical Interview Walk-Through Notes
+### 🔍 4. Technical Interview Walk-Through Notes
 * **Decisions Made:** I chose to treat the AI as a technical compilation engine rather than blindly accepting its structure. Driving the tool with deep backend parameters from the first sentence prevented it from drifting into presentation-layer scripts, while my structural adjustments ensured the matrix is fully maintainable and automation-ready.
 * **Alternatives Considered:** Allowing the AI to freely generate a standard generic test plan first, then filtering it. I rejected this because it wastes context tokens and degrades the engineering precision required for a Lead-level submission.
 
