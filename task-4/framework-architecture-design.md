@@ -102,8 +102,13 @@ export class BankConsoleFieldManager implements FieldInteractionControls {
 Switching tabs or triggering deep page scrolls in an enterprise banking console initiates massive DOM rehydration, stale node destructions, and variable layout synchronization intervals.
 
 ### 🚫 Defensive Architecture: What NOT to Do
-* **Never use static thread sleeps (`page.waitForTimeout(3000)`):** Hardcoded delays pollute compute performance and drastically increase CI run expenses.
-* **Never compile static page locators:** Compiling elements inside page class constructors locks stale element references in memory, triggering instant caching errors when tabs tear down and rebuild nodes.
+* **Never use static thread sleeps (`page.waitForTimeout(3000)`):** Hardcoded delays pollute compute performance and drastically increase execution latency and CI cloud pipeline run expenses.
+* **Never compile static page locators:** Compiling elements inside page class constructors locks stale element references in memory, triggering instant caching errors when tabs tear down and rebuild DOM nodes.
+* **Never hardcode target routing environments:** Hardcoding platform URLs or configuration tokens inside files prevents the automation suite from dynamically shifting execution profiles across Staging, UAT, or Mocking servers.
+* **Never create sequential test dependencies:** Forcing a test case to rely on the outcome or state of a prior script breaks atomic execution boundaries and entirely blocks the framework's ability to run tests in parallel.
+* **Never share global state across multi-worker threads:** Storing execution mutations or run tokens inside global variables causes data cross-contamination and race conditions when Playwright shards tests across concurrent browser processes.
+* **Never deploy generic assertions without failure logs:** Utilizing vague validation nodes or failing to isolate complete network capture traces on failure blinds regression engineers, heavily increasing the Mean Time to Resolution (MTTR).
+
 
 ### 🛡️ Safe Execution & Dynamic Web Assertions Strategy
 1. **Lazy Evaluation Locators:** All locator references are evaluated dynamically at the exact millisecond of the test interaction block.
