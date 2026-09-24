@@ -129,7 +129,7 @@ You must act as my technical sparring partner to brainstorm, polish, and structu
 * **Separated Business Justifications:** The AI initially combined the priority and severity risk analysis into single paragraphs. I rejected that format and forced them into explicit, distinct single-line text statements to achieve 100% compliance with the assessment grading checklist.
 ---
 
-## 💸 Task 3 — API Testing & Integration Governance
+## 💸 Task 3 — API Testing
 
 ### 🧠 Human Guidance & Testing Scope
 While executing this task, I explicitly directed the technical sparring sessions to ensure the automated suite and written analysis covered my core QA Lead criteria: **Happy Paths, Edge Cases, Critical Banking Scenarios, Input Validation Matrices (Data Types & Boundaries), Missing/Mandatory Parameters, and Authentication Layer Constraints**. This human-led scope forced the output to focus entirely on deep banking risks rather than generic CRUD API responses.
@@ -155,7 +155,7 @@ While executing this task, I explicitly directed the technical sparring sessions
 * **Refined Dynamic Collection Execution:** The only adjustments made were during the sandbox runtime configuration, where I manually guided the script execution paths to implement explicit `postman.setNextRequest()` routing loops to ensure all sequential chaining layers ran flawlessly across all iterations, achieving a clean **48/48 automated test pass rate**.
 ---
 
-## 📈 Task 4 — Automation Design & Framework Architecture
+## 📈 Task 4 — Automation Design (No Code)
 
 ### 🧠 Human Guidance & Collaborative Brainstorming
 * **The Dynamic Wrapper Obstacle:** When I first looked at the Bank Operations Console requirements, I noticed a huge technical blocker: all the input fields use random session IDs like `slot="field-145"`, and the form components are repeated across multiple tabs. Writing traditional locators here would make the tests fail constantly. To be completely honest, I wasn't sure how to cleanly bypass this dynamic wrapper issue at first.
@@ -179,7 +179,7 @@ While executing this task, I explicitly directed the technical sparring sessions
 
 ---
 
-## 📈 Task 5 — Quality Strategy & Release Judgement Memo
+## 📈 Task 5 — Quality Strategy & Release Judgement
 
 ### 🧠 Human Guidance & Collaborative Brainstorming
 * **The Release Pressure Confrontation:** Facing a strict 3-working-day marketing release constraint under a broken 68% regression rate and unvetted FX integrations represents a classic corporate delivery trap. I actively blocked the co-pilot's initial attempts to generate standard, text-heavy testing checklists or propose conditional "go-live" frameworks. 

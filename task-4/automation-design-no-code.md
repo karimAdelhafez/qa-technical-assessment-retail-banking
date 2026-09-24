@@ -1,4 +1,4 @@
-# Task 4 — Automation Framework Design & Test Architecture
+# Task 4 — Automation Design (No Code)
 
 This blueprint presents a scalable, maintainable test automation architecture for the dynamic **Bank Operations Console**. It prioritizes decoupled layer separation, locator resilience, dynamic DOM state management, self-healing test data isolation, and global scaling pipelines using **Playwright (TypeScript)**.
 

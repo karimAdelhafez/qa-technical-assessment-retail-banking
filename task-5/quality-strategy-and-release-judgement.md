@@ -1,4 +1,4 @@
-# Task 5 — Quality Strategy & Release Judgement Memo
+# Task 5 — Quality Strategy & Release Judgement
 
 This memorandum evaluates the risks of launching our new International Transfer Journey under the current tight timeline [5.1]. Given the low regression pass rate, open bugs in shared profile systems, and incomplete client business testing, this document outlines why we must halt the immediate release to protect customer funds and ledger integrity [5.1]. It details a practical, 72-hour priority plan to triage critical issues, maps out a transparent communication strategy for stakeholders, and defines the automated quality gates needed to keep us from hitting this bottleneck in future sprint cycles [5.2, 5.3, 5.4].
 

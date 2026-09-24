@@ -3,30 +3,30 @@
 Enterprise-grade Quality Engineering validation portfolio for a Retail Banking Application, focusing on system resiliency, data integrity, and backend architectural test coverage for core financial transaction cycles.
 
 ---
-
 ## 📁 Repository Structure
 
 ```text
 .
 ├── task-1/
-│   └── test-strategy-and-coverage-design.md
+│   └── test-design-and-risk-coverage.md
 ├── task-2/
-│   ├── exploratory-testing-and-bug-reports.md
-│   └── evidence/
-│       ├── bug_01_transfer_404.png
-│       └── bug_02_loan_500.png
+│   ├── evidence/
+│   │   ├── bug_01_transfer_404.png
+│   │   └── bug_02_loan_500.png
+│   └── exploratory-testing-and-bug-reporting.md
 ├── task-3/
-│   ├── api-analysis-and-governance.md
+│   ├── api-testing.md
 │   ├── currency-data.json
 │   ├── parabank-fx-rates-suite.postman_collection.json
 │   └── rates-environment.json
 ├── task-4/
-│   └── framework-architecture-design.md
+│   └── automation-design-no-code.md
 ├── task-5/
-│   └── quality-strategy-memo.md
+│   └── quality-strategy-and-release-judgement.md
 ├── ai-usage.md
 └── README.md
 ```
+
 
 ---
 
@@ -36,9 +36,9 @@ Enterprise-grade Quality Engineering validation portfolio for a Retail Banking A
   * *Scope:* Requirement analysis, question metrics, risk prioritization matrices, 12-test-case boundary design, coverage boundaries, and release quality gates.
 * **Task 2 — Exploratory Testing & Bug Reporting:** 25 minutes
   * *Scope:* Time-boxed session execution on live ParaBank instances, structural root-cause isolation, business impact telemetry log, and future roadmap scoping.
-* **Task 3 — API Testing & Integration Governance:** 70 minutes *(Note: Includes an extra 20 minutes of operational client profiling to map dataset query-runner behaviors across updated Postman interface layers).*
+* **Task 3 — API Testing:** 70 minutes *(Note: Includes an extra 20 minutes of operational client profiling to map dataset query-runner behaviors across updated Postman interface layers).*
   * *Scope:* Data-Driven Postman collection engine construction, schema contract assertions, request chaining loops, and upstream dependency security analysis.
-* **Task 4 — Automation Design & Test Architecture:** 50 minutes *(Note: Includes an extra 15 minutes of collaborative architectural spikes to design the abstract Semantic Parent-to-Child Anchor strategy, sight unseen due to missing visuals).*
+* **Task 4 — Automation Design (No Code):** 50 minutes *(Note: Includes an extra 15 minutes of collaborative architectural spikes to design the abstract Semantic Parent-to-Child Anchor strategy, sight unseen due to missing visuals).*
   * *Scope:* Composite Page Component designs, Semantic Parent-to-Child Anchor strategies, dynamic DOM rehydration gatekeepers, self-healing data models, and tooling trade-off evaluation.
 * **Task 5 — Quality Strategy & Release Judgement:** 45 minutes
   * *Scope:* Corporate release risk assessments, 72-hour resource allocation plans, upstream stakeholder communication matrices, CI/CD automated governance changes, and visible quality metrics.
