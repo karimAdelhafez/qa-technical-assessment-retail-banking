@@ -38,7 +38,6 @@ task-4/
     │   └── console-state.validator.ts # JSON Schema compiler verifying persistence at the contract level
     └── helpers/
         ├── field-manager.ts        # Polymorphic field controller wrapping ARIA interactions
-        ├── security-sanitizer.ts    # Scans response metadata for secure HTTP headers (OWASP baseline)
         └── dynamic-wait.helper.ts   # Custom element hydration checking handlers
 ```
 
