@@ -1,0 +1,224 @@
+{
+  "info": {
+    "_postman_id": "72cc6c4b-b0cd-46cb-adc5-e893698dbc84",
+    "name": "ParaBank FX Rates Integration Suite",
+    "schema": "https://getpostman.com",
+    "_exporter_id": "20438818"
+  },
+  "item": [
+    {
+      "name": "Get Dynamic FX Rates",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// ============================================================================\r",
+              "// ENTERPRISE BANKING API CONTRACT & VALIDATION MATRIX [7 SENSIBLE CHECKS]\r",
+              "// ============================================================================\r",
+              "\r",
+              "// 1. HTTP Status Code Compliance (RFC 7231 Boundary)\r",
+              "pm.test(\"[QE-01] Response status code is strictly 200 OK\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// 2. Performance SLA Performance (Banking Core Responsiveness Gate)\r",
+              "pm.test(\"[QE-02] API Latency matches SLA threshold (< 500ms)\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+              "});\r",
+              "\r",
+              "// 3. Complete Global JSON Schema Validation (Shape & Type Integrity)\r",
+              "pm.test(\"[QE-03] JSON payload shape matches contract dictionary criteria\", function () {\r",
+              "    const responseJson = pm.response.json();\r",
+              "    \r",
+              "    // Core structure envelope checks\r",
+              "    pm.expect(responseJson).to.be.an('object');\r",
+              "    pm.expect(responseJson.result).to.be.a('string');\r",
+              "    pm.expect(responseJson.base_code).to.be.a('string');\r",
+              "    pm.expect(responseJson.rates).to.be.an('object');\r",
+              "    pm.expect(responseJson.time_next_update_unix).to.be.a('number');\r",
+              "});\r",
+              "\r",
+              "// 4. Data Routing Parameter Consistency Verification\r",
+              "pm.test(\"[QE-04] Returned base_code matches dynamic input payload parameter\", function () {\r",
+              "    const responseJson = pm.response.json();\r",
+              "    \r",
+              "    // Pull the active iteration variable that drove the runtime request execution\r",
+              "    const expectedBase = pm.variables.get(\"base_currency\");\r",
+              "    \r",
+              "    pm.expect(responseJson.base_code).to.equal(expectedBase);\r",
+              "});\r",
+              "\r",
+              "// 5. Target Core Currency Presence Check\r",
+              "pm.test(\"[QE-05] Expected downstream target settlement currency is present\", function () {\r",
+              "    const responseJson = pm.response.json();\r",
+              "    const targetCurrency = pm.environment.get(\"target_currency\"); // Pulls 'EGP'\r",
+              "    \r",
+              "    pm.expect(responseJson.rates).to.have.property(targetCurrency);\r",
+              "});\r",
+              "\r",
+              "// 6. Currency Exchange Rate Data Type Verification\r",
+              "pm.test(\"[QE-06] Destination exchange rate is an immutable numeric Float value\", function () {\r",
+              "    const responseJson = pm.response.json();\r",
+              "    const targetCurrency = pm.environment.get(\"target_currency\");\r",
+              "    const targetRate = responseJson.rates[targetCurrency];\r",
+              "    \r",
+              "    pm.expect(targetRate).to.be.a('number');\r",
+              "});\r",
+              "\r",
+              "// 7. Sensible Positive Value Boundary Verification (Financial Leakage Block)\r",
+              "pm.test(\"[QE-07] Active conversion quotation rate yields non-zero positive boundaries\", function () {\r",
+              "    const responseJson = pm.response.json();\r",
+              "    const targetCurrency = pm.environment.get(\"target_currency\");\r",
+              "    const targetRate = responseJson.rates[targetCurrency];\r",
+              "    \r",
+              "    // Financial math sanity boundary control; rates can never be zero or a negative scalar balance\r",
+              "    pm.expect(targetRate).to.be.greaterThan(0);\r",
+              "});\r",
+              "\r",
+              "// ============================================================================\r",
+              "// DYNAMIC STATE CAPTURING FOR REQUEST CHAINING (For Deliverable 4)\r",
+              "// ============================================================================\r",
+              "if (pm.response.code === 200) {\r",
+              "    const responseData = pm.response.json();\r",
+              "    \r",
+              "    // Extract the unix time of the next rate synchronization batch\r",
+              "    if (responseData.time_next_update_unix) {\r",
+              "        pm.environment.set(\"captured_next_update\", responseData.time_next_update_unix);\r",
+              "    }\r",
+              "}\r",
+              "postman.setNextRequest(\"Verify Rate Synchronization State\");\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/latest/{{base_currency}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "latest",
+            "{{base_currency}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Verify Rate Synchronization State",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// ============================================================================\r",
+              "// DYNAMIC REQUEST CHAINING & STATE SYNCHRONIZATION MATRIX [2 CHECKS]\r",
+              "// ============================================================================\r",
+              "\r",
+              "// 8. Dynamic Value Capture Verification\r",
+              "pm.test(\"[QE-08] Downstream pipeline successfully inherited the chained runtime variable\", function () {\r",
+              "    const cachedUpdateTimestamp = pm.environment.get(\"captured_next_update\");\r",
+              "    \r",
+              "    // Verify connection ring mapping didn't fail and token is not null\r",
+              "    pm.expect(cachedUpdateTimestamp).to.not.be.undefined;\r",
+              "    pm.expect(cachedUpdateTimestamp).to.not.be.null;\r",
+              "    pm.expect(cachedUpdateTimestamp).to.not.equal(\"\");\r",
+              "});\r",
+              "\r",
+              "// 9. State Synchronization Check (Data Consistency Gate)\r",
+              "pm.test(\"[QE-09] Backend ledger time-stamps remain fully synchronized across sequential sessions\", function () {\r",
+              "    const responseJson = pm.response.json();\r",
+              "    const cachedUpdateTimestamp = Number(pm.environment.get(\"captured_next_update\"));\r",
+              "    \r",
+              "    // Confirm the server returns matching batch timestamps across sequential requests\r",
+              "    pm.expect(responseJson.time_next_update_unix).to.equal(cachedUpdateTimestamp);\r",
+              "});\r",
+              "postman.setNextRequest(\"Get FX Rates - Unsupported Currency Code (Negative Case)\");\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/latest/USD",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "latest",
+            "USD"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get FX Rates - Unsupported Currency Code (Negative Case)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// ============================================================================\r",
+              "// ENTERPRISE EXCEPTION HANDLING & ERROR VALIDATION MATRIX [3 CHECKS]\r",
+              "// ============================================================================\r",
+              "\r",
+              "// 10. Behavior Capture Assertion (Capturing actual API contract behavior)\r",
+              "pm.test(\"[QE-10] Server returns HTTP 200 OK despite processing a malformed currency payload\", function () {\r",
+              "    // Capture actual API behavior to flag error-handling flaws in documentation\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// 11. Internal JSON Error Result Validation\r",
+              "pm.test(\"[QE-11] JSON envelope response payload explicitly sets result indicator to error\", function () {\r",
+              "    const responseJson = pm.response.json();\r",
+              "    \r",
+              "    // Verify the main result string switches to error\r",
+              "    pm.expect(responseJson.result).to.equal(\"error\");\r",
+              "});\r",
+              "\r",
+              "// 12. Explicit Uncaught/Unsupported Code Mappings\r",
+              "pm.test(\"[QE-12] Server identifies boundary violation with correct error-type token\", function () {\r",
+              "    const responseJson = pm.response.json();\r",
+              "    \r",
+              "    // Ensure the core banking internal error token matches expected values\r",
+              "    pm.expect(responseJson[\"error-type\"]).to.equal(\"unsupported-code\");\r",
+              "});\r",
+              "postman.setNextRequest(null);\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/latest/INVALID",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "latest",
+            "INVALID"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

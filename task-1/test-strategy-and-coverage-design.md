@@ -73,7 +73,7 @@ This must be clarified because **"transfer failed" cannot safely mean "perform a
 
 ## 📊 2. Task 1.2 — Risk Assessment & Impact Strategy
 
-    I would prioritize risks based on **financial impact, security exposure, customer impact, regulatory/reputational impact, and likelihood of failure**.
+I would prioritize risks based on **financial impact, security exposure, customer impact, regulatory/reputational impact, and likelihood of failure**.
 
 | Priority | Risk Area | What Could Go Wrong | Customer Impact | Bank Impact | Delivery Partner Impact |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -98,7 +98,7 @@ This must be clarified because **"transfer failed" cannot safely mean "perform a
 ### 🎨 System Vulnerability Mapping (Risk Concentration)
 
 
-    The feature's highest-risk boundary is the point where customer money is affected:
+The feature's highest-risk boundary is the point where customer money is affected:
 
 ```text
     [Validation Layer]

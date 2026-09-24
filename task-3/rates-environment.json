@@ -1,0 +1,22 @@
+{
+  "id": "banking-fx-env-id",
+  "name": "ParaBank FX Testing Environment",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "https://er-api.com",
+      "enabled": true
+    },
+    {
+      "key": "target_currency",
+      "value": "EGP",
+      "enabled": true
+    },
+    {
+      "key": "captured_next_update",
+      "value": "",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}
